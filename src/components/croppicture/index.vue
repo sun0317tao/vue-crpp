@@ -140,6 +140,7 @@ export default {
     fileOrUrl: {
       handler(newval, oldval) {
         if (newval && newval.type?.includes("image")) {
+          this.cancel()
           this.isCropp = true;
           const readfile = new FileReader();
           readfile.readAsDataURL(newval);
