@@ -1,40 +1,53 @@
-# vue-cropp
+# Vue-cropp
 
-This template should help get you started developing with Vue 3 in Vite.
+一款简单易用的vue图片裁剪插件，适合用于头像裁剪等功能，兼顾有vue2和vue3，但浏览器兼容做的不是很好，后续会逐步改进，欢迎使用。
 
-## Recommended IDE Setup
+## 特色
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+- 自定义画布大小、裁剪框大小
+- 自定义背景色
+- 支持缩放、拖动、裁剪框拖动大小
+- 支持移动端，可适配大小，可拖动、缩放图片
 
-## Type Support for `.vue` Imports in TS
+## 项目地址
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+Github: ''
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+gitee: https://gitee.com/sun0317tao/vue-cropp#type-support-for-vue-imports-in-ts
 
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+(觉得还不错的，请赏一个star吧。)
 
-## Customize configuration
+## 使用方法
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
 
-## Project Setup
 
-```sh
-npm install
-```
 
-### Compile and Hot-Reload for Development
 
-```sh
-npm run dev
-```
 
-### Type-Check, Compile and Minify for Production
 
-```sh
-npm run build
-```
+## 参数说明
+
+| 属性名          | 作用                                     | 类型           | 必填 | 默认值 |
+| --------------- | ---------------------------------------- | -------------- | ---- | :----: |
+| croppwidth      | 画布宽                                   | number         | 否   |  800   |
+| croppheight     | 画布高                                   | number         | 否   |  400   |
+| croppBoxWidth   | 裁剪盒子宽                               | number         | 否   |  200   |
+| croppBoxHeight  | 裁剪盒子高                               | number         | 否   |  200   |
+| scalenum        | 放大缩小的速度（值越大放大或缩小的越快） | number         | 否   |  0.01  |
+| fileOrUrl       | 图片file文件对象                         | object         | 否   |   “”   |
+| backGroundColor | 画布背景色，支持颜色值和布尔值           | Boolean/string | 否   |  #000  |
+
+## 钩子函数
+
+| 属性名       | 作用                             | 类型     | 必填 | 返回值       |
+| ------------ | -------------------------------- | -------- | ---- | ------------ |
+| moveupCropp  | 裁剪框或图片移动后触发的钩子函数 | function | 否   | Base64       |
+| confirmCropp | 点击画布中的确认按钮触发的事件   | function | 否   | file文件对象 |
+
+
+
+## 更新日志
+
+**1.0.0**
+
+- 第一版开发完成。
