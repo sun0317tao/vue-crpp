@@ -19,9 +19,32 @@ gitee: https://gitee.com/sun0317tao/vue-cropp#type-support-for-vue-imports-in-ts
 
 ## 使用方法
 
+1、安装
 
+```
+npm install vue-img-cutter --save-dev # vue2
+npm install vue-img-cutter --save-dev # vue3
+```
 
+2、将 vue-cropp 引入项目中
 
+```
+import Cropp from "vue-cropp";
+export default {
+        components:{
+            ImgCutter
+        },
+...
+}
+<Cropp
+      :croppwidth="410"
+      :croppheight="600"
+      :fileOrUrl="fileval"
+      :backGroundColor="false"
+      @moveupCropp="moveupCropp"
+      @confirmCropp="confirmCropp"
+    />
+```
 
 
 
