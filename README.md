@@ -32,7 +32,7 @@ npm install vue-cropp --save-dev # vue3
 import Cropp from "vue-cropp";
 export default {
         components:{
-            ImgCutter
+            Cropp
         },
 ...
 }
