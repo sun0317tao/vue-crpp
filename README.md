@@ -22,8 +22,8 @@ gitee: https://gitee.com/sun0317tao/vue-cropp#type-support-for-vue-imports-in-ts
 1、安装
 
 ```
-npm install vue-img-cutter --save-dev # vue2
-npm install vue-img-cutter --save-dev # vue3
+npm install vue-cropp --save-dev # vue2
+npm install vue-cropp --save-dev # vue3
 ```
 
 2、将 vue-cropp 引入项目中
