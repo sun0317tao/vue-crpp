@@ -10,10 +10,8 @@
     @confirmCropp="confirmCropp"
   /> -->
   <Cropp
-    :croppwidth="410"
-    :croppheight="600"
     :fileOrUrl="fileval"
-    :backGroundColor="false"
+    :backGroundColor="true"
     @moveupCropp="moveupCropp"
     @confirmCropp="confirmCropp"
   />

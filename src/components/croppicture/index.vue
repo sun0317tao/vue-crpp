@@ -140,7 +140,7 @@ export default {
     fileOrUrl: {
       handler(newval, oldval) {
         if (newval && newval.type?.includes("image")) {
-          this.cancel()
+          this.cancel();
           this.isCropp = true;
           const readfile = new FileReader();
           readfile.readAsDataURL(newval);
@@ -157,14 +157,16 @@ export default {
   },
   computed: {
     bacColor() {
-      if (typeof this.backGroundColor == "string") {
-        return this.backGroundColor;
+      if (this.backGroundColor || typeof this.backGroundColor == "string") {
+        return typeof this.backGroundColor == "boolean"
+          ? "#000"
+          : this.backGroundColor;
       } else {
         return "";
       }
     },
     backImage() {
-      if (typeof this.backGroundColor == "boolean") {
+      if (typeof this.backGroundColor == "boolean" && !this.backGroundColor) {
         return this.backGroundColor
           ? "#000"
           : "linear-gradient( 45deg, rgba(0, 0, 0, 0.25) 25%, transparent 0, transparent 75%, rgba(0, 0, 0, 0.25) 0 ), linear-gradient(45deg, rgba(0, 0, 0, 0.25) 25%, transparent 0, transparent 75%, rgba(0, 0, 0, 0.25) 0)";
