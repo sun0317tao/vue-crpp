@@ -1,7 +1,7 @@
 {
   "name": "vue-cropp",
-  "version": "0.0.0",
-  "private": true,
+  "version": "1.0.0",
+  "private": false,
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check build-only",
@@ -9,6 +9,7 @@
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false"
   },
+  "main": "./src/index.js",
   "dependencies": {
     "vue": "^3.3.2"
   },
