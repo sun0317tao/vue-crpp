@@ -50,15 +50,16 @@ export default {
 
 ## 参数说明
 
-| 属性名          | 作用                                     | 类型           | 必填 | 默认值 |
-| --------------- | ---------------------------------------- | -------------- | ---- | :----: |
-| croppwidth      | 画布宽                                   | number         | 否   |  800   |
-| croppheight     | 画布高                                   | number         | 否   |  400   |
-| croppBoxWidth   | 裁剪盒子宽                               | number         | 否   |  200   |
-| croppBoxHeight  | 裁剪盒子高                               | number         | 否   |  200   |
-| scalenum        | 放大缩小的速度（值越大放大或缩小的越快） | number         | 否   |  0.01  |
-| fileOrUrl       | 图片file文件对象                         | object         | 否   |   “”   |
-| backGroundColor | 画布背景色，支持颜色值和布尔值           | Boolean/string | 否   |  #000  |
+| 属性名           | 作用                                     | 类型           | 必填 | 默认值 |
+| ---------------- | ---------------------------------------- | -------------- | ---- | :----: |
+| croppwidth       | 画布宽                                   | number         | 否   |  800   |
+| croppheight      | 画布高                                   | number         | 否   |  400   |
+| croppBoxWidth    | 裁剪盒子宽                               | number         | 否   |  200   |
+| croppBoxHeight   | 裁剪盒子高                               | number         | 否   |  200   |
+| scalenum         | 放大缩小的速度（值越大放大或缩小的越快） | number         | 否   |  0.01  |
+| fileOrUrl        | 图片file文件对象                         | object         | 否   |   “”   |
+| backGroundColor  | 画布背景色，支持颜色值和布尔值           | Boolean/string | 否   |  #000  |
+| croppfourthColor | 自定义裁剪框四个角颜色                   | string         | 否   |  #fff  |
 
 ## 钩子函数
 
@@ -78,3 +79,8 @@ export default {
 **1.1.2**
 
 - 去除项目中的log，优化移动端第一次在裁剪框中拖动和缩放不了图片的问题
+
+1.1.3
+
+- 优化图片清晰度问题，但是裁剪出来的图片为了保持清晰度图片的默认像素会放大当前设备屏幕的像素比
+- 增加可自定义裁剪框四个角颜色
