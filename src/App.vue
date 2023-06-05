@@ -9,14 +9,18 @@
     @moveupCropp="moveupCropp"
     @confirmCropp="confirmCropp"
   /> -->
-  <Cropp
-    croppfourthColor="red"
-    :croppwidth="400"
-    :fileOrUrl="fileval"
-    :backGroundColor="true"
-    @moveupCropp="moveupCropp"
-    @confirmCropp="confirmCropp"
-  />
+  <div class="dialog">
+    lll
+    <Cropp
+      croppfourthColor="red"
+      :croppwidth="400"
+      :fileOrUrl="fileval"
+      :backGroundColor="true"
+      @moveupCropp="moveupCropp"
+      @confirmCropp="confirmCropp"
+    />
+  </div>
+
   <button @click="confirmImage">下载</button>
   <input type="file" @change="uploadEvent" />
 </template>
@@ -38,4 +42,18 @@ const confirmCropp = (even) => {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.dialog {
+  width: 500px;
+  height: 500px;
+  padding: 20px;
+  /* background-color: #ccc; */
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  /* height: 2000px; */
+  /* margin-left: -25%;
+  margin-top: -25%; */
+}
+</style>

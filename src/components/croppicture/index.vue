@@ -235,7 +235,6 @@ export default {
           scale = (this.croppwidth * this.ratio) / imgWidth;
         }
       }
-      console.log(scale);
       let x = (this.croppwidth * this.ratio - img.width * scale) / 2;
       let y = (this.croppheight * this.ratio - img.height * scale) / 2;
       this.scale = scale;
@@ -285,14 +284,17 @@ export default {
      */
     // 裁剪框鼠标按下事件
     croppMousedown(event) {
+      var rect = this.croppicture.getBoundingClientRect();
+      const elementLeft = rect.left + window.scrollX;
+      const elementTop = rect.top + window.scrollY;
       this.croppicture.onmousemove = (e) => {
-        this.croppMousemove(e, event, this.croppicture);
+        this.croppMousemove(e, event, elementLeft, elementTop);
       };
     },
     // 父盒子鼠标移动事件
-    croppMousemove(e, event, element) {
-      let x = e.pageX - element.offsetLeft;
-      let y = e.pageY - element.offsetTop;
+    croppMousemove(e, event, elementLeft, elementTop) {
+      let x = e.pageX - elementLeft;
+      let y = e.pageY - elementTop;
       let sx = x - event.offsetX;
       let sy = y - event.offsetY;
       let wi = this.croppicture.offsetWidth - event.target.offsetWidth;
@@ -605,8 +607,8 @@ export default {
      */
     // 判断按下去的坐标是否在图片上
     imgIsDown(x, y) {
-      const imgWidth = this.img.width;
-      const imgHeight = this.img.height;
+      const imgWidth = this.img && this.img.width;
+      const imgHeight = this.img && this.img.height;
       const { px, py } = this.PO;
       return (
         x > px &&
