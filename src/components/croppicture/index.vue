@@ -14,8 +14,8 @@
     <canvas
       id="cvs"
       ref="cvsRef"
-      :width="croppwidth * 2"
-      :height="croppheight * 2"
+      :width="croppwidth * ratio"
+      :height="croppheight * ratio"
       :style="{ width: croppwidth + 'px', height: croppheight + 'px' }"
       >您的浏览器不支持canvas请升级</canvas
     >
@@ -23,8 +23,8 @@
     <canvas
       id="cvs_mask"
       ref="cvsmaskRef"
-      :width="croppwidth * 2"
-      :height="croppheight * 2"
+      :width="croppwidth * ratio"
+      :height="croppheight * ratio"
       :style="{ width: croppwidth + 'px', height: croppheight + 'px' }"
       @mousedown="canvasMousedown"
       @mouseup="maskCanvasMouse('up')"
