@@ -29,7 +29,7 @@
 import Cropp from "./components/croppicture/index.vue";
 import { computed, ref } from "vue";
 
-const fileval = ref();
+const fileval = ref('');
 const uploadEvent = (file: any) => {
   fileval.value = file.target.files[0];
 };
@@ -48,10 +48,10 @@ const confirmCropp = (even) => {
   height: 500px;
   padding: 20px;
   /* background-color: #ccc; */
-  position: absolute;
+  /* position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%); */
   /* height: 2000px; */
   /* margin-left: -25%;
   margin-top: -25%; */

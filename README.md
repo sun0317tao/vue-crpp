@@ -88,3 +88,7 @@ export default {
 **1.1.4**
 
 - 优化页面盒子外部使用transform、margin，等样式后裁剪盒子移动错位的bug。
+
+**1.1.5**
+
+- 修改上级元素有 text-align: center; 等对canvas的影响

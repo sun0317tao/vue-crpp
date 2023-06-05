@@ -99,7 +99,7 @@ export default {
     },
     // 文件对象或者图片地址
     fileOrUrl: {
-      type: [Object, String],
+      type: null,
       default: "",
     },
     // 背景色
@@ -711,6 +711,7 @@ export default {
   position: relative;
   background-size: 30px 30px;
   background-position: 0 0, 15px 15px;
+  text-align: initial;
 }
 #cvs {
   position: absolute;
