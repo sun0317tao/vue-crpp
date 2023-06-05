@@ -13,7 +13,7 @@
 
 Github: https://github.com/sun0317tao/vue-crpp
 
-gitee: https://gitee.com/sun0317tao/vue-cropp#type-support-for-vue-imports-in-ts
+gitee: https://gitee.com/sun0317tao/vue-cropp
 
 (觉得还不错的，请赏一个star吧。)
 
