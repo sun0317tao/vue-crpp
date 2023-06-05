@@ -11,7 +11,7 @@
 
 ## 项目地址
 
-Github: ''
+Github: https://github.com/sun0317tao/vue-crpp
 
 gitee: https://gitee.com/sun0317tao/vue-cropp#type-support-for-vue-imports-in-ts
 
