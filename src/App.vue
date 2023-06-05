@@ -10,6 +10,7 @@
     @confirmCropp="confirmCropp"
   /> -->
   <Cropp
+    croppfourthColor="red"
     :croppwidth="400"
     :fileOrUrl="fileval"
     :backGroundColor="true"

@@ -11,15 +11,21 @@
     @mouseenter="croppMouse"
   >
     <!-- 展示图片的画布 -->
-    <canvas id="cvs" ref="cvsRef" :width="croppwidth" :height="croppheight"
+    <canvas
+      id="cvs"
+      ref="cvsRef"
+      :width="croppwidth * 2"
+      :height="croppheight * 2"
+      :style="{ width: croppwidth + 'px', height: croppheight + 'px' }"
       >您的浏览器不支持canvas请升级</canvas
     >
     <!-- 遮罩的canvas -->
     <canvas
       id="cvs_mask"
       ref="cvsmaskRef"
-      :width="croppwidth"
-      :height="croppheight"
+      :width="croppwidth * 2"
+      :height="croppheight * 2"
+      :style="{ width: croppwidth + 'px', height: croppheight + 'px' }"
       @mousedown="canvasMousedown"
       @mouseup="maskCanvasMouse('up')"
       @mouseleave="maskCanvasMouse"
@@ -101,10 +107,15 @@ export default {
       type: [String, Boolean],
       default: "#000",
     },
+    // 裁剪框四个角颜色
+    croppfourthColor: {
+      type: [String],
+      default: "#fff",
+    },
   },
   data() {
     return {
-      // 获取设备像素比
+      // 获取设备像素比  (解决图片模糊问题，放大canvas的像素比)
       ratio: window.devicePixelRatio || 1,
       isCropp: false, // 是否显示裁剪框
       croppicture: null, // 父盒子dom
@@ -135,6 +146,11 @@ export default {
   mounted() {
     // 获取夫盒子dom
     this.croppicture = this.$refs["croppictureRef"];
+    const cropp = this.$refs["croppRef"];
+    cropp.style.setProperty(
+      "--borderStyle",
+      `2px solid ${this.croppfourthColor}`
+    );
     console.log(
       "欢迎使用vue-cropp, gitee地址： https://gitee.com/sun0317tao/vue-cropp"
     );
@@ -143,7 +159,6 @@ export default {
     fileOrUrl: {
       handler(newval, oldval) {
         if (newval && newval.type?.includes("image")) {
-          this.cancel();
           this.isCropp = true;
           const readfile = new FileReader();
           readfile.readAsDataURL(newval);
@@ -183,8 +198,10 @@ export default {
     initcropp() {
       const cropp = this.$refs["croppRef"];
       const cvs = this.$refs["cvsRef"];
-      cropp.style.left = cvs.width / 2 - cropp.offsetWidth / 2 + "px";
-      cropp.style.top = cvs.height / 2 - cropp.offsetHeight / 2 + "px";
+      cropp.style.left =
+        cvs.width / this.ratio / 2 - cropp.offsetWidth / 2 + "px";
+      cropp.style.top =
+        cvs.height / this.ratio / 2 - cropp.offsetHeight / 2 + "px";
       cropp.style.transform = "none";
     },
     // 生成图片
@@ -213,13 +230,14 @@ export default {
       } else {
         if (imgWidth / imgHeight <= this.croppwidth / this.croppheight) {
           // 计算宽高比
-          scale = this.croppheight / imgHeight;
+          scale = (this.croppheight * this.ratio) / imgHeight;
         } else {
-          scale = this.croppwidth / imgWidth;
+          scale = (this.croppwidth * this.ratio) / imgWidth;
         }
       }
-      let x = (this.croppwidth - img.width * scale) / 2;
-      let y = (this.croppheight - img.height * scale) / 2;
+      console.log(scale);
+      let x = (this.croppwidth * this.ratio - img.width * scale) / 2;
+      let y = (this.croppheight * this.ratio - img.height * scale) / 2;
       this.scale = scale;
       // 记录图片大小
       this.beginImg.width = img.width * this.scale;
@@ -238,6 +256,8 @@ export default {
         img.width * this.scale,
         img.height * this.scale
       );
+      // 初始化完图片生成一次当前坐标的图片
+      this.confirmImage("up");
     },
 
     // 设置遮罩&在遮罩裁剪一个矩形框
@@ -252,17 +272,11 @@ export default {
       ctx.fillStyle = "#00000090";
       ctx.fillRect(0, 0, canvasMask.width, canvasMask.height);
       // 在遮罩上设置裁剪区域（挖个洞）
-      // ctx.fillRect(
-      //   cropp.offsetLeft,
-      //   cropp.offsetTop,
-      //   cropp.offsetWidth,
-      //   cropp.offsetHeight
-      // );
       ctx.clearRect(
-        cropp.offsetLeft,
-        cropp.offsetTop,
-        cropp.offsetWidth,
-        cropp.offsetHeight
+        cropp.offsetLeft * this.ratio,
+        cropp.offsetTop * this.ratio,
+        cropp.offsetWidth * this.ratio,
+        cropp.offsetHeight * this.ratio
       );
     },
 
@@ -428,7 +442,7 @@ export default {
     canvasMousedown(e) {
       let beginX = e.offsetX;
       let beginY = e.offsetY;
-      if (!this.imgIsDown(e.offsetX, e.offsetY)) {
+      if (!this.imgIsDown(e.offsetX * this.ratio, e.offsetY * this.ratio)) {
         return;
       }
       /** @type {HTMLCanvasElement} */
@@ -622,15 +636,15 @@ export default {
 
       const cropp = this.$refs["croppRef"];
 
-      const croppWidth = cropp.offsetWidth;
-      const croppHeight = cropp.offsetHeight;
+      const croppWidth = cropp.offsetWidth * this.ratio;
+      const croppHeight = cropp.offsetHeight * this.ratio;
 
       downCanvas.width = croppWidth;
       downCanvas.height = croppHeight;
       downCtx.drawImage(
         cvs,
-        cropp.offsetLeft,
-        cropp.offsetTop,
+        cropp.offsetLeft * this.ratio,
+        cropp.offsetTop * this.ratio,
         croppWidth,
         croppHeight,
         0,
@@ -641,11 +655,15 @@ export default {
       if (type == "confirm") {
         downCanvas.toBlob((blob) => {
           // 将 Blob 对象转换为 File 对象
-          const file = new File([blob], "myImage.png", { type: "image/png" });
+          const file = new File(
+            [blob],
+            Math.random().toString().slice(2) + ".png",
+            { type: "image/png" }
+          );
           this.$emit("confirmCropp", file);
         });
       } else {
-        this.$emit("moveupCropp", downCanvas.toDataURL("image/jpeg", 0.6));
+        this.$emit("moveupCropp", downCanvas.toDataURL("image/png", 0.6));
       }
 
       downCanvas.remove();
@@ -659,7 +677,7 @@ export default {
         const mask_ctx = canvasMask?.getContext("2d");
         ctx.clearRect(0, 0, cvs.width, cvs.height);
         mask_ctx.clearRect(0, 0, canvasMask.width, canvasMask.height);
-        // this.isCropp = false;
+        this.isCropp = false;
       });
     },
   },
