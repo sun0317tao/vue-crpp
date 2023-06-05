@@ -35,6 +35,7 @@
       class="cropp"
       @mousedown="croppMousedown"
       @mouseup="croppMouse('up')"
+      @touchstart="maskCanvasTouchstart"
       v-show="isCropp"
     >
       <div
@@ -134,7 +135,9 @@ export default {
   mounted() {
     // 获取夫盒子dom
     this.croppicture = this.$refs["croppictureRef"];
-    console.log(this.backImage);
+    console.log(
+      "欢迎使用vue-cropp, gitee地址： https://gitee.com/sun0317tao/vue-cropp"
+    );
   },
   watch: {
     fileOrUrl: {
@@ -218,15 +221,12 @@ export default {
       let x = (this.croppwidth - img.width * scale) / 2;
       let y = (this.croppheight - img.height * scale) / 2;
       this.scale = scale;
-      console.log(scale);
       // 记录图片大小
       this.beginImg.width = img.width * this.scale;
       this.beginImg.height = img.height * this.scale;
-      console.log(this.beginImg);
       // 记录原始坐标
       this.PO.px = x;
       this.PO.py = y;
-      console.log(this.PO);
       ctx.drawImage(
         img,
         0,
@@ -258,7 +258,6 @@ export default {
       //   cropp.offsetWidth,
       //   cropp.offsetHeight
       // );
-      console.log(cropp.offsetLeft);
       ctx.clearRect(
         cropp.offsetLeft,
         cropp.offsetTop,
@@ -299,7 +298,6 @@ export default {
       }
       event.target.style.setProperty("left", sx + "px");
       event.target.style.setProperty("top", sy + "px");
-      console.log(event.target);
       this.drawCropp();
     },
     // 裁剪框鼠标弹起事件和父盒子鼠标离开事件（为了注销裁剪盒子的父盒子的移动事件）
@@ -328,8 +326,6 @@ export default {
       let rightLeft = e.target.offsetLeft + croppLeft + e.target.offsetWidth;
       let rightTop = e.target.offsetTop + croppTop + e.target.offsetHeight;
       cvs_mask.onmousemove = (event) => {
-        console.log(cropp.offsetWidth);
-        console.log(event.offsetX - rightLeft);
         let newWidth = cropp.offsetWidth + (event.offsetX - rightLeft);
         let newHeight = cropp.offsetHeight + (event.offsetY - rightTop);
 
@@ -351,14 +347,12 @@ export default {
       cropp.style.pointerEvents = "none";
       let leftLeft = e.target.offsetLeft + cropp.offsetLeft;
       let leftTop = e.target.offsetTop + cropp.offsetTop;
-      console.log(leftTop);
       cvs_mask.onmousemove = (event) => {
         const offsetLeft = event.offsetX;
         const offsetTop = event.offsetY;
         // 需要注意右边的坐标需要原来的减去现在的。因为是往左移坐标坐标是越来越小。
         let newWidth = cropp.offsetWidth + (leftLeft - offsetLeft);
         let newHeight = cropp.offsetHeight + (leftTop - offsetTop);
-        // console.log(newHeight);
 
         cropp.style.left = offsetLeft + "px";
         cropp.style.top = offsetTop + "px";
@@ -382,7 +376,6 @@ export default {
       let leftLeft = e.target.offsetLeft + cropp.offsetLeft;
       let leftTop =
         e.target.offsetTop + cropp.offsetTop + e.target.offsetHeight;
-      console.log(leftTop);
       cvs_mask.onmousemove = (event) => {
         const offsetLeft = event.offsetX;
         const offsetTop = event.offsetY;
@@ -438,7 +431,6 @@ export default {
       if (!this.imgIsDown(e.offsetX, e.offsetY)) {
         return;
       }
-      console.log(this.imgIsDown(e.offsetX, e.offsetY));
       /** @type {HTMLCanvasElement} */
       const cvs_mask = this.$refs["cvsmaskRef"];
       const cvs = this.$refs["cvsRef"];
@@ -484,16 +476,13 @@ export default {
     maskCanvasMouseWheel(event) {
       if (!this.isCropp) return;
       event.preventDefault();
-      // console.log(event.offsetX);
       /** @type {HTMLCanvasElement} */
       const cvs = this.$refs["cvsRef"];
       const ctx = cvs.getContext("2d");
       if (event.wheelDelta >= 0) {
-        console.log("向上滚动");
         //放大的倍数可以根据实际情况定义，可以丝滑一点，也可以控制最大放大倍数和最小倍数
         this.scale += this.scalenum;
       } else {
-        console.log("向下滚动");
         this.scale -= this.scalenum;
       }
       // 计算放大之后的坐标
@@ -517,28 +506,26 @@ export default {
      */
     maskCanvasTouchstart(e) {
       e.preventDefault();
-      console.log(e.targetTouches[0].clientX);
+      const cropp = this.$refs["croppRef"];
+      cropp.style.pointerEvents = "none";
       if (e.targetTouches.length === 1) {
         const one = e.targetTouches[0];
         let beginX = one.clientX;
         let beginY = one.clientY;
-        if (!this.imgIsDown(one.clientX, one.clientY)) {
-          return;
-        }
+        // if (!this.imgIsDown(one.clientX, one.clientY)) {
+        //   return;
+        // }
         /** @type {HTMLCanvasElement} */
         const cvs_mask = this.$refs["cvsmaskRef"];
         const cvs = this.$refs["cvsRef"];
-        const cropp = this.$refs["croppRef"];
         const ctx = cvs.getContext("2d");
         cvs_mask.ontouchmove = (event) => {
           const evone = event.targetTouches[0];
-          cropp.style.pointerEvents = "none";
           const x = evone.clientX;
           const y = evone.clientY;
           //算出来移动的像素（每次都是减去上次的值）
           var Mx = x - beginX + this.PO.px;
           var My = y - beginY + this.PO.py;
-          console.log(Mx, My);
           this.repeatDraw(cvs, ctx, Mx, My);
           // 每次画完更新坐标
           this.PO.px = Mx;
@@ -666,12 +653,14 @@ export default {
     },
     cancel() {
       const cvs = this.$refs["cvsRef"];
-      const ctx = cvs.getContext("2d");
       const canvasMask = this.$refs["cvsmaskRef"];
-      const mask_ctx = canvasMask.getContext("2d");
-      ctx.clearRect(0, 0, cvs.width, cvs.height);
-      mask_ctx.clearRect(0, 0, canvasMask.width, canvasMask.height);
-      this.isCropp = false;
+      this.$nextTick(() => {
+        const ctx = cvs?.getContext("2d");
+        const mask_ctx = canvasMask?.getContext("2d");
+        ctx.clearRect(0, 0, cvs.width, cvs.height);
+        mask_ctx.clearRect(0, 0, canvasMask.width, canvasMask.height);
+        // this.isCropp = false;
+      });
     },
   },
   beforeUnmount() {
