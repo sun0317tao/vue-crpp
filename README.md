@@ -37,12 +37,12 @@ export default {
 ...
 }
 <Cropp
+		ref="croppRef"
       :croppwidth="410"
       :croppheight="600"
       :fileOrUrl="fileval"
       :backGroundColor="false"
       @moveupCropp="moveupCropp"
-      @confirmCropp="confirmCropp"
     />
 ```
 
@@ -63,10 +63,11 @@ export default {
 
 ## 钩子函数
 
-| 属性名       | 作用                             | 类型     | 必填 | 返回值       |
-| ------------ | -------------------------------- | -------- | ---- | ------------ |
-| moveupCropp  | 裁剪框或图片移动后触发的钩子函数 | function | 否   | Base64       |
-| confirmCropp | 点击画布中的确认按钮触发的事件   | function | 否   | file文件对象 |
+| 属性名       | 作用                                                         | 类型     | 必填 | 返回值  |
+| ------------ | ------------------------------------------------------------ | -------- | ---- | ------- |
+| moveupCropp  | 裁剪框或图片移动后触发的钩子函数                             | function | 否   | Base64  |
+| clearCanvas  | 清除画布的方法，使用ref调用；示例：croppRef.value.clearCanvas() | function | 否   | 无      |
+| confirmImage | 使用ref调用该方法，传入confirm,返回promise 的 file文件对象；示例：croppRef.value.confirmImage('confirm') | function | 否   | promise |
 
 
 
@@ -92,3 +93,7 @@ export default {
 **1.1.5**
 
 - 修改上级元素有 text-align: center; 等对canvas的影响
+
+**1.1.6**
+
+- 取消画布下方的确认和取消按钮，改为使用ref调用的钩子函数，clearCanvas（）方法清除画布；confirmImage('confirm')方法返回promise得到文件对象

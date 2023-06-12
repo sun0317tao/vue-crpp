@@ -53,14 +53,14 @@
       <div class="left_top" @mousedown="leftTopmousedown"></div>
       <div class="left_bottom" @mousedown="leftBottommousedown"></div>
     </div>
-    <button
+    <!-- <button
       v-show="isCropp"
       class="cropp_button"
       @click="confirmImage('confirm')"
     >
       确定
     </button>
-    <button class="cropp_button_cancel" @click="cancel">取消</button>
+    <button class="cropp_button_cancel" @click="cancel">取消</button> -->
   </div>
 </template>
 
@@ -632,46 +632,46 @@ export default {
     },
     // 裁剪完成生成图片
     confirmImage(type) {
-      let downCanvas = document.createElement("canvas");
-      let downCtx = downCanvas.getContext("2d");
-      const cvs = this.$refs["cvsRef"];
+      return new Promise((reslove, reject) => {
+        let downCanvas = document.createElement("canvas");
+        let downCtx = downCanvas.getContext("2d");
+        const cvs = this.$refs["cvsRef"];
 
-      const cropp = this.$refs["croppRef"];
+        const cropp = this.$refs["croppRef"];
 
-      const croppWidth = cropp.offsetWidth * this.ratio;
-      const croppHeight = cropp.offsetHeight * this.ratio;
+        const croppWidth = cropp.offsetWidth * this.ratio;
+        const croppHeight = cropp.offsetHeight * this.ratio;
 
-      downCanvas.width = croppWidth;
-      downCanvas.height = croppHeight;
-      downCtx.drawImage(
-        cvs,
-        cropp.offsetLeft * this.ratio,
-        cropp.offsetTop * this.ratio,
-        croppWidth,
-        croppHeight,
-        0,
-        0,
-        croppWidth,
-        croppHeight
-      );
-      if (type == "confirm") {
-        downCanvas.toBlob((blob) => {
-          // 将 Blob 对象转换为 File 对象
-          const file = new File(
-            [blob],
-            Math.random().toString().slice(2) + ".png",
-            { type: "image/png" }
-          );
-          this.$emit("confirmCropp", file);
-        });
-      } else {
-        this.$emit("moveupCropp", downCanvas.toDataURL("image/png", 0.6));
-      }
-
-      downCanvas.remove();
-      // return (dataUrl = downCanvas.toDataURL());
+        downCanvas.width = croppWidth;
+        downCanvas.height = croppHeight;
+        downCtx.drawImage(
+          cvs,
+          cropp.offsetLeft * this.ratio,
+          cropp.offsetTop * this.ratio,
+          croppWidth,
+          croppHeight,
+          0,
+          0,
+          croppWidth,
+          croppHeight
+        );
+        if (type == "confirm") {
+          downCanvas.toBlob((blob) => {
+            // 将 Blob 对象转换为 File 对象
+            const file = new File(
+              [blob],
+              Math.random().toString().slice(2) + ".png",
+              { type: "image/png" }
+            );
+            downCanvas.remove();
+            reslove(file)
+          });
+        } else {
+          this.$emit("moveupCropp", downCanvas.toDataURL("image/png", 0.6));
+        }
+      });
     },
-    cancel() {
+    clearCanvas() {
       const cvs = this.$refs["cvsRef"];
       const canvasMask = this.$refs["cvsmaskRef"];
       this.$nextTick(() => {
