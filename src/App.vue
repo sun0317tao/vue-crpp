@@ -32,6 +32,8 @@ import { computed, ref } from "vue";
 
 const fileval = ref("");
 const uploadEvent = (file: any) => {
+  croppRef.value.clearCanvas()
+
   fileval.value = file.target.files[0];
 };
 

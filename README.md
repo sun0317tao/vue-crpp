@@ -97,3 +97,7 @@ export default {
 **1.1.6**
 
 - 取消画布下方的确认和取消按钮，改为使用ref调用的钩子函数，clearCanvas（）方法清除画布；confirmImage('confirm')方法返回promise得到文件对象
+
+**1.1.7**
+
+- 修复清楚画布之后再次移动会出现上一次图片的bug
