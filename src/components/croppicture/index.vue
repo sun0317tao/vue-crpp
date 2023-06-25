@@ -442,6 +442,7 @@ export default {
      */
     // 遮罩盒子鼠标按下事件（为了拖拽图片）
     canvasMousedown(e) {
+      if (!this.isCropp) return;
       let beginX = e.offsetX;
       let beginY = e.offsetY;
       if (!this.imgIsDown(e.offsetX * this.ratio, e.offsetY * this.ratio)) {
@@ -522,6 +523,7 @@ export default {
      */
     maskCanvasTouchstart(e) {
       e.preventDefault();
+      if (!this.isCropp) return;
       const cropp = this.$refs["croppRef"];
       cropp.style.pointerEvents = "none";
       if (e.targetTouches.length === 1) {
@@ -632,6 +634,7 @@ export default {
     },
     // 裁剪完成生成图片
     confirmImage(type) {
+      if (!this.isCropp) return null;
       return new Promise((reslove, reject) => {
         let downCanvas = document.createElement("canvas");
         let downCtx = downCanvas.getContext("2d");
@@ -664,7 +667,7 @@ export default {
               { type: "image/png" }
             );
             downCanvas.remove();
-            reslove(file)
+            reslove(file);
           });
         } else {
           this.$emit("moveupCropp", downCanvas.toDataURL("image/png", 0.6));
