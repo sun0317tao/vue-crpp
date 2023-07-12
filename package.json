@@ -1,10 +1,6 @@
 {
   "name": "vue-cropp",
-<<<<<<< HEAD
   "version": "1.1.8",
-=======
-  "version": "1.1.7",
->>>>>>> a95b2ccb7767722b61842f384c04a86a43797c52
   "private": false,
   "scripts": {
     "dev": "vite",
