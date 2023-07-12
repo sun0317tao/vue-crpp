@@ -101,3 +101,7 @@ export default {
 **1.1.7**
 
 - 修复清楚画布之后再次移动会出现上一次图片的bug
+
+**1.1.8**
+
+- 修复在火狐浏览器按下裁剪框的时候 取值event.offsetX 和 event.offsetY 有bug，具体原因还不太清楚，查资料也说的很模糊，但是采用为 layerX 和 layerY 就好了。

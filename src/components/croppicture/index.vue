@@ -295,8 +295,8 @@ export default {
     croppMousemove(e, event, elementLeft, elementTop) {
       let x = e.pageX - elementLeft;
       let y = e.pageY - elementTop;
-      let sx = x - event.offsetX;
-      let sy = y - event.offsetY;
+      let sx = x - event.layerX;
+      let sy = y - event.layerY;
       let wi = this.croppicture.offsetWidth - event.target.offsetWidth;
       let he = this.croppicture.offsetHeight - event.target.offsetHeight;
       // 判断边界

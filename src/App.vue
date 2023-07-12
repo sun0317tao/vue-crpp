@@ -40,7 +40,7 @@ const uploadEvent = (file: any) => {
 const croppRef = ref()
 
 const moveupCropp = (even) => {
-  console.log(even);
+  // console.log(even);
 };
 const cancenEvent = (even) => {
   croppRef.value.clearCanvas()
@@ -52,6 +52,7 @@ const confirmEvent = async () => {
 
 <style scoped>
 .dialog {
+  margin-left: 300px;
   width: 500px;
   height: 500px;
   padding: 20px;
